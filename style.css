@@ -2,6 +2,10 @@ body {
     background-color: darkslategray;
 }
 
+.gap {
+    gap: 10px;
+}
+
 .outer-calc-body {
     display: flex;
     background-color: white;
@@ -51,7 +55,6 @@ body {
 }
 
 #left-right-buttons {
-    box-sizing: border-box;
     display: flex;
     flex: 1;
 }
@@ -61,6 +64,7 @@ body {
 }
 
 #on-of-button {
+    display: flex;
     flex: 1;
 }
 
@@ -76,4 +80,6 @@ button {
     flex: auto;
     font-family: 'Courier New', Courier, monospace;
     font-size: 30px;
+    border-radius: 10px;
+    border: 0px;
 }
