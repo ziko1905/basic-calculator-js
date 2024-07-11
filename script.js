@@ -14,6 +14,7 @@ function createCalcBtns() {
         arrowsDiv.appendChild(arrowRightBtn);
         onOffDiv.appendChild(onOffBtn);
     }
+
     function createNumberBtns() {
         const numbersDiv = document.querySelector(".number-buttons")
         let rows = [];
@@ -33,10 +34,10 @@ function createCalcBtns() {
             row.appendChild(btn)
         }
         const lastRow = rows[0];
-        const lastRowVals = ["0", ".", "Ans"];
+        const LAST_ROW_VALS = ["0", ".", "Ans"];
         for (let p = 0; p < 3; p++) {
             const btn = document.createElement("button")
-            btn.textContent = lastRowVals[p]
+            btn.textContent = LAST_ROW_VALS[p]
 
             lastRow.appendChild(btn)
         }
@@ -44,9 +45,22 @@ function createCalcBtns() {
         console.log(rows)
     }
 
+    function createOperBtns () {
+        const operDiv = document.querySelector(".operation-buttons")
+        let rows = [];
+
+        for (let n = 0; n < 4; n++) {
+            const row = document.createElement("div")
+            row.setAttribute("class", "rows gap")
+            rows.push(row)
+            operDiv.appendChild(row)
+        }
+    }
+
     
     createNumberBtns()
     createFunctBtns()
+    createOperBtns()
 }
 
 createCalcBtns()

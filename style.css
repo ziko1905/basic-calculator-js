@@ -76,6 +76,8 @@ body {
 }
 
 .operation-buttons {
+    display: flex;
+    flex-direction: column;
     flex: 2;
 }
 
