@@ -29,17 +29,19 @@ body {
 }
 
 .buttons {
+    display: flex;
+    flex-direction: column;
     border: 1px solid black;
     flex: auto;
 }
 
 .functional-buttons {
-    background-color: aliceblue;
-    flex: auto;
+    background-color: rgba(240, 248, 255, 0.425);
+    flex: 1;
 
 }
 
 .math-buttons {
-    flex: auto;
-    background-color: red;
+    flex: 4;
+    background-color: rgba(255, 0, 0, 0.438);
 }
