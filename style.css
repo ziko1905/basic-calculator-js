@@ -36,6 +36,8 @@ body {
 }
 
 .functional-buttons {
+    display: flex; 
+    flex-direction: row; /* i think i am doing this wrong */
     background-color: rgba(240, 248, 255, 0.425);
     flex: 1;
 
@@ -44,4 +46,20 @@ body {
 .math-buttons {
     flex: 4;
     background-color: rgba(255, 0, 0, 0.438);
+}
+
+#left-right-buttons {
+    background-color: aliceblue;
+    width: 20px;
+    height: 20px;
+    flex: auto;
+    align-self: center;
+}
+
+#placeholder {
+    flex: auto;
+}
+
+#on-of-button {
+    flex: auto;
 }
