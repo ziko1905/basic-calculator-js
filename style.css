@@ -51,10 +51,6 @@ body {
     flex: 4;
 }
 
-.operation-buttons {
-    background-color: rgba(255, 0, 0, 0.438);
-}
-
 #left-right-buttons {
     display: flex;
     flex: 1.25;
