@@ -2,10 +2,20 @@ body {
     background-color: darkslategray;
 }
 
-.calc-body {
+.outer-calc-body {
+    display: flex;
     background-color: white;
+    box-sizing: border-box;
     height: 700px;
     width: 500px;
+    padding: 20px 20px 35px 20px;
     margin: 50px auto;
-    border-radius: 5px;
+    border-radius: 65px;
+}
+
+.inner-calc-body {
+    background-color: rgb(79, 89, 99);
+    flex: auto;
+    border-radius: 25px;
+
 }
