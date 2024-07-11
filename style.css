@@ -20,8 +20,26 @@ body {
     flex: auto;
     border-radius: 25px;
     padding: 20px;
+    gap: 70px;
 }
 
 #display {
     background-color: cadetblue;
+    border-radius: 5px;
+}
+
+.buttons {
+    border: 1px solid black;
+    flex: auto;
+}
+
+.functional-buttons {
+    background-color: aliceblue;
+    flex: auto;
+
+}
+
+.math-buttons {
+    flex: auto;
+    background-color: red;
 }
