@@ -51,19 +51,17 @@ body {
 }
 
 #left-right-buttons {
-    background-color: aliceblue;
-    width: 20px;
-    height: 20px;
-    flex: auto;
-    align-self: center;
+    box-sizing: border-box;
+    display: flex;
+    flex: 1;
 }
 
 #placeholder {
-    flex: auto;
+    flex: 1;
 }
 
 #on-of-button {
-    flex: auto;
+    flex: 1;
 }
 
 .number-buttons {
@@ -72,4 +70,10 @@ body {
 
 .operation-buttons {
     flex: 2;
+}
+
+button {
+    flex: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
 }
