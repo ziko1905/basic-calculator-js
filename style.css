@@ -50,6 +50,10 @@ body {
     flex-direction: row;
     flex: 4;
 }
+.operation-buttons button {
+    background-color: grey;
+    color: aliceblue;
+}
 
 #left-right-buttons {
     display: flex;
