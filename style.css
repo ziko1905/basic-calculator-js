@@ -93,3 +93,8 @@ button {
     display: flex;
     flex: 1;
 }
+
+#special-buttons {
+    background-color: royalblue;
+    color: aliceblue;
+}

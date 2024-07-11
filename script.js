@@ -9,6 +9,7 @@ function createCalcBtns() {
         arrowLeftBtn.textContent = "<";
         arrowRightBtn.textContent = ">";
         onOffBtn.textContent = "On/Off";
+        onOffBtn.setAttribute("id", "special-buttons")
 
         arrowsDiv.appendChild(arrowLeftBtn);
         arrowsDiv.appendChild(arrowRightBtn);
@@ -59,8 +60,11 @@ function createCalcBtns() {
             const row = rows[Math.floor(m/2)];
             const btn = document.createElement("button");
 
-            btn.textContent = OPER_ROW_VALS[m]
-            row.appendChild(btn)
+            if (OPER_ROW_VALS[m] == "Del") {
+                btn.setAttribute("id", "special-buttons");
+            }
+            btn.textContent = OPER_ROW_VALS[m];
+            row.appendChild(btn);
         }
     }
 
