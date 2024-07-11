@@ -35,14 +35,12 @@ body {
 .buttons {
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
     flex: auto;
 }
 
 .functional-buttons {
     display: flex; 
-    flex-direction: row; /* i think i am doing this wrong */
-    background-color: rgba(240, 248, 255, 0.425);
+    flex-direction: row;
     flex: 1;
 
 }
@@ -51,12 +49,15 @@ body {
     display: flex;
     flex-direction: row;
     flex: 4;
+}
+
+.operation-buttons {
     background-color: rgba(255, 0, 0, 0.438);
 }
 
 #left-right-buttons {
     display: flex;
-    flex: 1;
+    flex: 1.25;
 }
 
 #placeholder {
@@ -69,6 +70,8 @@ body {
 }
 
 .number-buttons {
+    display: flex;
+    flex-direction: column;
     flex: 3;
 }
 
@@ -77,9 +80,14 @@ body {
 }
 
 button {
-    flex: auto;
+    flex: 1;
     font-family: 'Courier New', Courier, monospace;
     font-size: 30px;
     border-radius: 10px;
     border: 0px;
+}
+
+.rows {
+    display: flex;
+    flex: 1;
 }
