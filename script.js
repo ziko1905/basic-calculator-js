@@ -77,11 +77,20 @@ createCalcBtns()
 
 function Button() {
     let obj = document.createElement("button");
-    // obj.addEventListener("mousedown", (e) => {
-    //     this.lightColor = getComputedStyle(e.target).backgroundColor;
-    //     console.log(this.lightColor.split("").slice(4, -1));
-    // })
-    // obj.addEventListener("click", (e) => console.log(e.target.style.backgroundColor = "red"))
+    obj.addEventListener("mousedown", (e) => {
+        this.lightColor = getComputedStyle(e.target).backgroundColor;
+        let dimColor = getRgbFromString(this.lightColor)
+        e.target.style.backgroundColor = `rgb(${dimColor[0] * 0.9}, ${dimColor[0] * 0.9}, ${dimColor[0] * 0.9})`
+        console.log("im down")
+    })
+
+    obj.addEventListener("mouseup", (e) => {
+        e.target.style.backgroundColor = this.lightColor;
+    })
+
+    function getRgbFromString(string) {
+        return string.split("").slice(4, -1).join("").split(", ")
+    }
 
     return obj
 }
