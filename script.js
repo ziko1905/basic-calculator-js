@@ -1,19 +1,19 @@
 function createCalcBtns() {
     function createFunctBtns() {
         const arrowsDiv = document.querySelector("#left-right-buttons");
-        const onOffDiv = document.querySelector("#on-of-button");
+        const clearDiv = document.querySelector("#on-of-button");
         const arrowLeftBtn = Button();
         const arrowRightBtn = Button();
-        const onOffBtn = Button();
+        const clearBtn = Button();
 
         arrowLeftBtn.textContent = "<";
         arrowRightBtn.textContent = ">";
-        onOffBtn.textContent = "On/Off";
-        onOffBtn.setAttribute("id", "special-buttons")
+        clearBtn.textContent = "Clear";
+        clearBtn.setAttribute("id", "special-buttons")
 
         arrowsDiv.appendChild(arrowLeftBtn);
         arrowsDiv.appendChild(arrowRightBtn);
-        onOffDiv.appendChild(onOffBtn);
+        clearDiv.appendChild(clearBtn);
     }
 
     function createNumberBtns() {
