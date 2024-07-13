@@ -1,3 +1,14 @@
+let calcArr = [];
+let prevAns = 0;
+const calcScreen = document.querySelector("canvas");
+const SCREEN_WIDTH = getComputedStyle(calcScreen).width;
+const SCREEN_HEIGHT = getComputedStyle(calcScreen).height;
+const SCREEN_WIDTH_NUMBER = +SCREEN_WIDTH.split("").slice(0, -2).join("")
+const SCREEN_HEIGHT_NUMBER = +SCREEN_HEIGHT.split("").slice(0, -2).join("")
+
+calcScreen.setAttribute("width", SCREEN_WIDTH);
+calcScreen.setAttribute("height", SCREEN_HEIGHT)
+
 function createCalcBtns() {
     function createFunctBtns() {
         const arrowsDiv = document.querySelector("#left-right-buttons");
@@ -75,7 +86,16 @@ function createCalcBtns() {
 
 createCalcBtns()
 
-function Button() {
+function clearCalcScreen() {
+    let context = calcScreen.getContext("2d")
+    context.clearRect(0, 0, calcScreen.width, calcScreen.height)
+    calcArr = []
+
+    console.log("screen cleared")
+
+}
+
+function Button(func) {
     let obj = document.createElement("button");
     obj.addEventListener("mousedown", (e) => {
         this.lightColor = getComputedStyle(e.target).backgroundColor;
@@ -85,8 +105,11 @@ function Button() {
         e.target.style.backgroundColor = `rgb(${dimColor[0] * DIM_PERCENTAGE}, ${dimColor[1] * DIM_PERCENTAGE}, ${dimColor[2] * DIM_PERCENTAGE})`
     })
 
-    obj.addEventListener("mouseup", (e) => {
+    obj.addEventListener("click", (e) => {
         e.target.style.backgroundColor = this.lightColor;
+        let pressedValue = e.target.textContent;
+        if (pressedValue == "Clear") clearCalcScreen()
+
     })
 
     function getRgbFromString(string) {
@@ -95,5 +118,10 @@ function Button() {
 
     return obj
 }
-Button.prototype = HTMLButtonElement.prototype
 
+function addToExpression(string) {
+    calcArr.push(string)
+}
+console.log(SCREEN_WIDTH_NUMBER)
+let context = calcScreen.getContext("2d")
+context.fillRect(SCREEN_WIDTH_NUMBER / 2, SCREEN_HEIGHT_NUMBER / 2, 2, 10)
