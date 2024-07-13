@@ -2,9 +2,9 @@ function createCalcBtns() {
     function createFunctBtns() {
         const arrowsDiv = document.querySelector("#left-right-buttons");
         const onOffDiv = document.querySelector("#on-of-button");
-        const arrowLeftBtn = document.createElement("button");
-        const arrowRightBtn = document.createElement("button");
-        const onOffBtn = document.createElement("button")
+        const arrowLeftBtn = Button();
+        const arrowRightBtn = Button();
+        const onOffBtn = Button();
 
         arrowLeftBtn.textContent = "<";
         arrowRightBtn.textContent = ">";
@@ -28,16 +28,15 @@ function createCalcBtns() {
         for (let m = 1; m < 10; m++) {
             let i = Math.floor((m-1) / 3) + 1;
             let row = rows[i];
-            const btn = document.createElement("button");
+            const btn = Button();
             btn.textContent = m;
-            console.log(m);
 
             row.appendChild(btn);
         }
         const lastRow = rows[0];
         const LAST_ROW_VALS = ["0", ".", "Ans"];
         for (let p = 0; p < 3; p++) {
-            const btn = document.createElement("button");
+            const btn = Button();
             btn.textContent = LAST_ROW_VALS[p];
 
             lastRow.appendChild(btn);
@@ -58,7 +57,7 @@ function createCalcBtns() {
         }
         for (let m = 0; m < 8; m++) {
             const row = rows[Math.floor(m/2)];
-            const btn = document.createElement("button");
+            const btn = Button();
 
             if (OPER_ROW_VALS[m] == "Del") {
                 btn.setAttribute("id", "special-buttons");
@@ -75,3 +74,16 @@ function createCalcBtns() {
 }
 
 createCalcBtns()
+
+function Button() {
+    let obj = document.createElement("button");
+    // obj.addEventListener("mousedown", (e) => {
+    //     this.lightColor = getComputedStyle(e.target).backgroundColor;
+    //     console.log(this.lightColor.split("").slice(4, -1));
+    // })
+    // obj.addEventListener("click", (e) => console.log(e.target.style.backgroundColor = "red"))
+
+    return obj
+}
+Button.prototype = HTMLButtonElement.prototype
+
