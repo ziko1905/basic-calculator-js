@@ -109,6 +109,10 @@ function Button(func) {
         e.target.style.backgroundColor = this.lightColor;
         let pressedValue = e.target.textContent;
         if (pressedValue == "Clear") clearCalcScreen()
+        else {
+            calcArr.push(pressedValue)
+            draw()
+        }
 
     })
 
@@ -123,5 +127,9 @@ function addToExpression(string) {
     calcArr.push(string)
 }
 console.log(SCREEN_WIDTH_NUMBER)
-let context = calcScreen.getContext("2d")
-context.fillRect(SCREEN_WIDTH_NUMBER / 2, SCREEN_HEIGHT_NUMBER / 2, 2, 10)
+
+function draw() {
+    let context = calcScreen.getContext("2d")
+    context.font = "48px serif"
+    context.fillText(calcArr.join(""), 5, 50)
+}
