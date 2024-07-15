@@ -118,6 +118,13 @@ function moveLeft() {
     drawX -= 28
 }
 
+function moveRight() {
+    if (currCharPos == calcArr.length - 1) return
+    currCharPos++
+    clearTargetLine()
+    drawX += 28
+}
+
 function Button(func) {
     let obj = document.createElement("button");
     obj.addEventListener("mousedown", (e) => {
@@ -135,6 +142,7 @@ function Button(func) {
         if (pressedValue == "Clear") clearCalcScreen()
         else if (pressedValue == "Del") deleteCurrChar()
         else if (pressedValue == "<") moveLeft()
+        else if (pressedValue == ">") moveRight()
         else {
             calcArr.push(pressedValue)
             draw(pressedValue)
