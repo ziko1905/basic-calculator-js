@@ -4,8 +4,10 @@ let currCharPos = -1;
 
 const calcScreen = document.querySelector("canvas");
 const calcContext = calcScreen.getContext("2d")
-const TEXT_FONT = "38px serif";
-calcContext.font = TEXT_FONT;
+const TEXT_SIZE = "38px"
+const TEXT_FONT = "serif"
+const TEXT_STYLE = `${TEXT_SIZE} ${TEXT_FONT}`;
+calcContext.font = TEXT_STYLE;
 
 const SCREEN_WIDTH = getComputedStyle(calcScreen).width;
 const SCREEN_HEIGHT = getComputedStyle(calcScreen).height;
@@ -148,9 +150,8 @@ function moveRight() {
 }
 
 let bracketCount = 0;
-let currIndex = 0;
 
-function evalEq() {
+function evalEq(currIndex) {
     let res = 0;
     let float = false;
     let dotDiv = 10;
@@ -170,7 +171,7 @@ function evalEq() {
         else if (["+", "-"].includes(calcArr[currIndex])) {
             currIndex++
             if (currIndex > calcArr.length - 1) callSyntaxError();
-            else if (calcArr[currIndex-1] == "+") res += evalEq(); 
+            else if (calcArr[currIndex-1] == "+") res += evalEq(currIndex); 
             else res -= evalEq();
         }
         currIndex++
@@ -205,7 +206,9 @@ function Button() {
         else if (pressedValue == "Del") deleteCurrChar();
         else if (pressedValue == "<") moveLeft();
         else if (pressedValue == ">") moveRight();
-        else if (pressedValue == "=") draw(evalEq());
+        else if (pressedValue == "=") {
+            drawResult(evalEq(0));
+        }
         else {
             calcArr.splice(currCharPos + 1, 0, pressedValue);
             currCharPos++
@@ -223,7 +226,7 @@ function Button() {
 }
 
 function draw(index) {
-    calcContext.font = TEXT_FONT;
+    calcContext.font = TEXT_STYLE;
     calcContext.clearRect(drawX, DRAW_EQU_Y + 10, SCREEN_WIDTH_NUMBER, -52);
     let tmpX = drawX;
     for (let n = index; n < calcArr.length; n++) {
@@ -241,7 +244,7 @@ function draw(index) {
 }
 
 function drawResult(res) {
-    calcContext.font = TEXT_FONT;
+    calcContext.font = TEXT_STYLE;
     calcContext.fillText(res, 0, RESULT_Y_POS)
 }
 
