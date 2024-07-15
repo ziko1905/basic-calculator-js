@@ -110,7 +110,6 @@ function deleteCurrChar() {
     draw(currCharPos)
     currCharPos--
     
-
 }
 
 function moveLeft() {
@@ -168,7 +167,7 @@ console.log(SCREEN_WIDTH_NUMBER)
 
 function draw(index) {
     calcContext.font = "48px serif"
-    calcContext.clearRect(drawX, DRAW_EQU_Y, SCREEN_WIDTH_NUMBER, -32)
+    calcContext.clearRect(drawX, DRAW_EQU_Y + 10, SCREEN_WIDTH_NUMBER, -52)
     let tmpX = drawX
     for (let n = index; n < calcArr.length; n++) {
         calcContext.fillText(calcArr[n], tmpX, DRAW_EQU_Y, 24);
