@@ -15,6 +15,7 @@ const STARTING_X_POS = 9;
 const ELEMENTS_GAP = calcContext.measureText("6").width + 4; //4 is added to make space for target line and 6 is used for common width among numbers
 const DRAW_EQU_Y = 50;
 const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
+const RESULT_Y_POS = 180;
 
 let drawX = STARTING_X_POS;
 let prevX = STARTING_X_POS;
@@ -150,18 +151,18 @@ let bracketCount = 0;
 let currIndex = 0;
 
 function evalEq() {
-    res = 0
+    let res = 0;
     let float = false;
     let dotDiv = 10;
     const intArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     while (currIndex < calcArr.length) {
-        if (intArr.includes(calcArr[currIndex])) {
+        if (intArr.includes(+calcArr[currIndex])) {
             if (!float) {
                 res *= 10;
-                res += calcArr[currIndex];
+                res += +calcArr[currIndex];
             }
             else {
-                res += calcArr[currIndex] / dotDiv
+                res += +calcArr[currIndex] / dotDiv
                 dotDiv *= 10;
             }
         }
@@ -169,19 +170,20 @@ function evalEq() {
         else if (["+", "-"].includes(calcArr[currIndex])) {
             currIndex++
             if (currIndex > calcArr.length - 1) callSyntaxError();
-            else if (calcArr[currIndex] == "+") res += evalEq(); 
-            else res -+ evalEq();
+            else if (calcArr[currIndex-1] == "+") res += evalEq(); 
+            else res -= evalEq();
         }
+        currIndex++
     }
     return res
 } 
 
 function callSyntaxError() {
-
+    console.log("Syntax error")
 }
 
 function callMathError() {
-    
+    console.log("Math error")
 }
 
 
@@ -203,6 +205,7 @@ function Button() {
         else if (pressedValue == "Del") deleteCurrChar();
         else if (pressedValue == "<") moveLeft();
         else if (pressedValue == ">") moveRight();
+        else if (pressedValue == "=") draw(evalEq());
         else {
             calcArr.splice(currCharPos + 1, 0, pressedValue);
             currCharPos++
@@ -224,6 +227,7 @@ function draw(index) {
     calcContext.clearRect(drawX, DRAW_EQU_Y + 10, SCREEN_WIDTH_NUMBER, -52);
     let tmpX = drawX;
     for (let n = index; n < calcArr.length; n++) {
+        //two loops are needed for drawing ans in 3 separate places
         for (let m of calcArr[n]) {
             let addLeftMargin = (m == '.') ? Math.floor(calcContext.measureText(".").width / 2) : 0;
             calcContext.fillText(m, tmpX + addLeftMargin, DRAW_EQU_Y, ELEMENTS_GAP - 4);
@@ -234,6 +238,11 @@ function draw(index) {
     
     clearTargetLine()
     
+}
+
+function drawResult(res) {
+    calcContext.font = TEXT_FONT;
+    calcContext.fillText(res, 0, RESULT_Y_POS)
 }
 
 function drawTargetLine() {
