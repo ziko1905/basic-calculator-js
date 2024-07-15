@@ -8,6 +8,7 @@ const SCREEN_WIDTH_NUMBER = +SCREEN_WIDTH.split("").slice(0, -2).join("")
 const SCREEN_HEIGHT_NUMBER = +SCREEN_HEIGHT.split("").slice(0, -2).join("")
 const STARTING_X_POS = 9;
 
+let currCharPos = -1;
 let drawX = STARTING_X_POS;
 const DRAW_EQU_Y = 50
 const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
@@ -130,6 +131,7 @@ function Button(func) {
         else {
             calcArr.push(pressedValue)
             draw()
+            currCharPos++
         }
 
     })
