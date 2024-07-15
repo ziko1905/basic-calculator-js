@@ -91,8 +91,7 @@ function createCalcBtns() {
 createCalcBtns()
 
 function clearCalcScreen() {
-    let context = calcScreen.getContext("2d")
-    context.clearRect(0, 0, calcScreen.width, calcScreen.height)
+    calcContext.clearRect(0, 0, calcScreen.width, calcScreen.height)
     calcArr = []
     drawX = 5;
 
@@ -103,6 +102,8 @@ function clearCalcScreen() {
 function deleteCurrChar() {
     calcArr.pop()
     drawX -= 24;
+    calcContext.clearRect(drawX, DRAW_EQU_Y, 24, -32)
+
 
 }
 
@@ -145,10 +146,6 @@ function draw() {
     calcContext.fillText(calcArr[calcArr.length - 1], drawX, DRAW_EQU_Y, 24)
     clearTargetLine()
     drawX += 28;
-
-    const text = context.measureText(calcArr.join("").charAt(calcArr.length - 1));
-    console.log(calcArr.join("").charAt(-1))
-    console.log(text.height)
 }
 
 function drawTargetLine() {
