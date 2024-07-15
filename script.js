@@ -22,6 +22,7 @@ const RESULT_Y_POS = 180;
 let drawX = STARTING_X_POS;
 let prevX = STARTING_X_POS;
 let ans = 1;
+let error = false;
 
 
 calcScreen.setAttribute("width", SCREEN_WIDTH);
@@ -108,7 +109,7 @@ function createCalcBtns() {
 createCalcBtns()
 
 function clearCalcScreen() {
-    calcContext.clearRect(0, 0, calcScreen.width, calcScreen.height);
+    calcContext.clearRect(0, 0, SCREEN_WIDTH_NUMBER, SCREEN_HEIGHT_NUMBER);
     calcArr = [];
     drawX = STARTING_X_POS;
     currCharPos = -1;
@@ -174,25 +175,33 @@ function evalEq(currIndex) {
         else if (calcArr[currIndex] == ".") float = true;
         else if (["+", "-"].includes(calcArr[currIndex])) {
             currIndex++
-            if (currIndex > calcArr.length - 1) return "Syntax Error";
+            if (currIndex > calcArr.length - 1) {
+                callSyntaxError();
+                return null
+            }
             else {
                 equ = evalEq(currIndex);
-                if (calcArr[currIndex-1] == "+") res += equ[0]; 
+                if (!equ) return equ
+                else if (calcArr[currIndex-1] == "+") res += equ[0]; 
                 else res -= equ[0];
                 currIndex = equ[1]
             }
         }
         currIndex++
     }
-    return  [Math.floor(res*100) / 100, currIndex]
+    return [Math.floor(res*100) / 100, currIndex]
 } 
 
 function callSyntaxError() {
-    console.log("Syntax error")
+    calcContext.clearRect(0, 0, SCREEN_WIDTH_NUMBER, SCREEN_HEIGHT_NUMBER);
+    drawResult("Syntax Error")
+    error = true;
 }
 
 function callMathError() {
-    console.log("Math error")
+    calcContext.clearRect(0, 0, SCREEN_WIDTH_NUMBER, SCREEN_HEIGHT_NUMBER);
+    drawResult("Math Error")
+    error = true;
 }
 
 
@@ -211,12 +220,20 @@ function Button() {
         let pressedValue = e.target.textContent;
         clearResultScreen()
 
+        if (error) {
+            drawX = STARTING_X_POS;
+            draw(0);
+            drawX = prevX;
+            error = false;
+        }
+
         if (pressedValue == "Clear") clearCalcScreen();
         else if (pressedValue == "Del") deleteCurrChar();
         else if (pressedValue == "<") moveLeft();
         else if (pressedValue == ">") moveRight();
         else if (pressedValue == "=") {
-            drawResult(evalEq(0)[0]);
+            equ = evalEq(0)
+            if (equ) drawResult(equ[0]);
         }
         else {
             calcArr.splice(currCharPos + 1, 0, pressedValue);
