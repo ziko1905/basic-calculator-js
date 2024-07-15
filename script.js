@@ -5,6 +5,9 @@ const SCREEN_WIDTH = getComputedStyle(calcScreen).width;
 const SCREEN_HEIGHT = getComputedStyle(calcScreen).height;
 const SCREEN_WIDTH_NUMBER = +SCREEN_WIDTH.split("").slice(0, -2).join("")
 const SCREEN_HEIGHT_NUMBER = +SCREEN_HEIGHT.split("").slice(0, -2).join("")
+let drawX = 5;
+let DRAW_EQU_Y = 50
+const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
 
 calcScreen.setAttribute("width", SCREEN_WIDTH);
 calcScreen.setAttribute("height", SCREEN_HEIGHT)
@@ -57,7 +60,7 @@ function createCalcBtns() {
 
     function createOperBtns () {
         const operDiv = document.querySelector(".operation-buttons");
-        const OPER_ROW_VALS = ["=", "Del", "X", "/", "+", "-", "(", ")"];
+        const OPER_ROW_VALS = ["=", "Del", "x", "/", "+", "-", "(", ")"];
         let rows = [];
 
         for (let n = 0; n < 4; n++) {
@@ -90,6 +93,7 @@ function clearCalcScreen() {
     let context = calcScreen.getContext("2d")
     context.clearRect(0, 0, calcScreen.width, calcScreen.height)
     calcArr = []
+    drawX = 5;
 
     console.log("screen cleared")
 
@@ -108,6 +112,7 @@ function Button(func) {
     obj.addEventListener("click", (e) => {
         e.target.style.backgroundColor = this.lightColor;
         let pressedValue = e.target.textContent;
+        console.log(this.pressed)
         if (pressedValue == "Clear") clearCalcScreen()
         else {
             calcArr.push(pressedValue)
@@ -131,5 +136,24 @@ console.log(SCREEN_WIDTH_NUMBER)
 function draw() {
     let context = calcScreen.getContext("2d")
     context.font = "48px serif"
-    context.fillText(calcArr.join(""), 5, 50)
+    context.fillText(calcArr[calcArr.length - 1], drawX, DRAW_EQU_Y, 24)
+    drawX += 24;
+
+    const text = context.measureText(calcArr.join("").charAt(calcArr.length - 1));
+    console.log(calcArr.join("").charAt(-1))
+    console.log(text.height)
 }
+
+function drawTargetLine() {
+    let context = calcScreen.getContext("2d");
+    context.fillRect(drawX, DRAW_EQU_Y, 4, -32);
+    window.setInterval(clearTargetLine, TARGET_LINE_INTERVAL * 1000)
+}
+
+function clearTargetLine() {
+    let context = calcScreen.getContext("2d");
+    context.clearRect(drawX, DRAW_EQU_Y, 4, -32);
+    window.setInterval(drawTargetLine, TARGET_LINE_INTERVAL * 1000)
+}
+
+drawTargetLine()
