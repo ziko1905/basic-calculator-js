@@ -6,8 +6,10 @@ const SCREEN_WIDTH = getComputedStyle(calcScreen).width;
 const SCREEN_HEIGHT = getComputedStyle(calcScreen).height;
 const SCREEN_WIDTH_NUMBER = +SCREEN_WIDTH.split("").slice(0, -2).join("")
 const SCREEN_HEIGHT_NUMBER = +SCREEN_HEIGHT.split("").slice(0, -2).join("")
-let drawX = 9;
-let DRAW_EQU_Y = 50
+const STARTING_X_POS = 9;
+
+let drawX = STARTING_X_POS;
+const DRAW_EQU_Y = 50
 const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
 
 calcScreen.setAttribute("width", SCREEN_WIDTH);
@@ -93,7 +95,7 @@ createCalcBtns()
 function clearCalcScreen() {
     calcContext.clearRect(0, 0, calcScreen.width, calcScreen.height)
     calcArr = []
-    drawX = 5;
+    drawX = STARTING_X_POS;
 
     console.log("screen cleared")
 
