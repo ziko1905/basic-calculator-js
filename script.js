@@ -4,12 +4,15 @@ let currCharPos = -1;
 
 const calcScreen = document.querySelector("canvas");
 const calcContext = calcScreen.getContext("2d")
+const TEXT_FONT = "48px serif";
+calcContext.font = TEXT_FONT;
+
 const SCREEN_WIDTH = getComputedStyle(calcScreen).width;
 const SCREEN_HEIGHT = getComputedStyle(calcScreen).height;
 const SCREEN_WIDTH_NUMBER = +SCREEN_WIDTH.split("").slice(0, -2).join("")
 const SCREEN_HEIGHT_NUMBER = +SCREEN_HEIGHT.split("").slice(0, -2).join("")
 const STARTING_X_POS = 9;
-const ELEMENTS_GAP = 28;
+const ELEMENTS_GAP = calcContext.measureText("6").width + 4; //4 is added to make space for target line and 6 is used for common width among numbers
 const DRAW_EQU_Y = 50;
 const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
 
@@ -152,7 +155,7 @@ function Button() {
             calcArr.splice(currCharPos + 1, 0, pressedValue);
             currCharPos++
             draw(currCharPos);
-            drawX += ELEMENTS_GAP;
+            drawX += (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3: ELEMENTS_GAP;
         }
 
     })
@@ -165,13 +168,15 @@ function Button() {
 }
 
 function draw(index) {
-    calcContext.font = "48px serif"
+    calcContext.font = TEXT_FONT;
     calcContext.clearRect(drawX, DRAW_EQU_Y + 10, SCREEN_WIDTH_NUMBER, -52);
     let tmpX = drawX;
-    for (let n = index; n < calcArr.length; n++) {    
-        let addLeftMargin = (calcArr[n] == '.') ? Math.floor(calcContext.measureText(".").width / 2) : 0;
-        calcContext.fillText(calcArr[n], tmpX + addLeftMargin, DRAW_EQU_Y, 24);
-        tmpX += ELEMENTS_GAP;
+    for (let n = index; n < calcArr.length; n++) {
+        for (let m of calcArr[n]) {
+            let addLeftMargin = (m == '.') ? Math.floor(calcContext.measureText(".").width / 2) : 0;
+            calcContext.fillText(m, tmpX + addLeftMargin, DRAW_EQU_Y, ELEMENTS_GAP - 4);
+            tmpX += ELEMENTS_GAP;
+        }
     }
     
     clearTargetLine()
