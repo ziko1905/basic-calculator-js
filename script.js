@@ -122,16 +122,17 @@ function deleteCurrChar() {
 
 function moveLeft() {
     if (currCharPos == -1) return
-    currCharPos--
     clearTargetLine();
-    drawX -= ELEMENTS_GAP;
+    drawX -= (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
+    currCharPos--
 }
 
 function moveRight() {
     if (currCharPos == calcArr.length - 1) return
     currCharPos++
     clearTargetLine();
-    drawX += ELEMENTS_GAP;
+    drawX += (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
+    
 }
 
 function Button() {
