@@ -146,14 +146,14 @@ function draw() {
 
 function drawTargetLine() {
     let context = calcScreen.getContext("2d");
+    const targetX = drawX
+    console.log("draw")
     context.fillRect(drawX, DRAW_EQU_Y, 4, -32);
-    window.setInterval(clearTargetLine, TARGET_LINE_INTERVAL * 1000)
+    window.setTimeout(() => {
+        context.clearRect(targetX, DRAW_EQU_Y, 4, -32);
+        window.setTimeout(drawTargetLine, TARGET_LINE_INTERVAL * 1000)
+    }, TARGET_LINE_INTERVAL * 1000)
 }
 
-function clearTargetLine() {
-    let context = calcScreen.getContext("2d");
-    context.clearRect(drawX, DRAW_EQU_Y, 4, -32);
-    window.setInterval(drawTargetLine, TARGET_LINE_INTERVAL * 1000)
-}
 
 drawTargetLine()
