@@ -107,9 +107,15 @@ function deleteCurrChar() {
     calcArr.pop()
     clearTargetLine()
     drawX -= 28;
-    calcContext.clearRect(drawX, DRAW_EQU_Y, 24, -32)
+    calcContext.clearRect(drawX, DRAW_EQU_Y, SCREEN_WIDTH_NUMBER, -32)
 
+}
 
+function moveLeft() {
+    if (currCharPos == -1) return
+    currCharPos--
+    clearTargetLine()
+    drawX -= 28
 }
 
 function Button(func) {
@@ -125,9 +131,10 @@ function Button(func) {
     obj.addEventListener("click", (e) => {
         e.target.style.backgroundColor = this.lightColor;
         let pressedValue = e.target.textContent;
-        console.log(this.pressed)
+
         if (pressedValue == "Clear") clearCalcScreen()
         else if (pressedValue == "Del") deleteCurrChar()
+        else if (pressedValue == "<") moveLeft()
         else {
             calcArr.push(pressedValue)
             draw(pressedValue)
