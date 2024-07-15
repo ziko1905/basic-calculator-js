@@ -113,9 +113,9 @@ function clearCalcScreen() {
 
 function deleteCurrChar() {
     if (currCharPos == -1) return
-    calcArr.splice(currCharPos, 1);
+    let removedVal = calcArr.splice(currCharPos, 1);
     clearTargetLine();
-    drawX -= ELEMENTS_GAP;
+    drawX -= (removedVal == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
     draw(currCharPos);
     currCharPos--
     
