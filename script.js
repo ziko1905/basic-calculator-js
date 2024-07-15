@@ -5,7 +5,7 @@ const SCREEN_WIDTH = getComputedStyle(calcScreen).width;
 const SCREEN_HEIGHT = getComputedStyle(calcScreen).height;
 const SCREEN_WIDTH_NUMBER = +SCREEN_WIDTH.split("").slice(0, -2).join("")
 const SCREEN_HEIGHT_NUMBER = +SCREEN_HEIGHT.split("").slice(0, -2).join("")
-let drawX = 5;
+let drawX = 9;
 let DRAW_EQU_Y = 50
 const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
 
@@ -137,6 +137,7 @@ function draw() {
     let context = calcScreen.getContext("2d")
     context.font = "48px serif"
     context.fillText(calcArr[calcArr.length - 1], drawX, DRAW_EQU_Y, 24)
+    clearTargetLine()
     drawX += 28;
 
     const text = context.measureText(calcArr.join("").charAt(calcArr.length - 1));
@@ -146,14 +147,20 @@ function draw() {
 
 function drawTargetLine() {
     let context = calcScreen.getContext("2d");
-    const targetX = drawX
     console.log("draw")
     context.fillRect(drawX - 4, DRAW_EQU_Y, 4, -32);
     window.setTimeout(() => {
-        context.clearRect(targetX - 4, DRAW_EQU_Y, 4, -32);
-        window.setTimeout(drawTargetLine, TARGET_LINE_INTERVAL * 1000)
+        clearTargetLine()
+        window.setTimeout(() => {drawTargetLine()}, TARGET_LINE_INTERVAL * 1000)
     }, TARGET_LINE_INTERVAL * 1000)
+    
+    
 }
 
+function clearTargetLine() {
+    let context = calcScreen.getContext("2d")
+    context.clearRect(drawX - 4, DRAW_EQU_Y, 4, -32);
+    
+}
 
 drawTargetLine()
