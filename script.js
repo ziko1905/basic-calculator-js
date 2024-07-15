@@ -180,7 +180,7 @@ function evalEq(currIndex) {
         }
         currIndex++
     }
-    return res
+    return  Math.floor(res*100) / 100
 } 
 
 function callSyntaxError() {
