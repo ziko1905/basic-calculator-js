@@ -18,6 +18,7 @@ const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
 
 let drawX = STARTING_X_POS;
 let prevX = STARTING_X_POS;
+let ans = 1;
 
 
 calcScreen.setAttribute("width", SCREEN_WIDTH);
@@ -144,6 +145,45 @@ function moveRight() {
         drawX += (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
     }
 }
+
+let bracketCount = 0;
+let currIndex = 0;
+
+function evalEq() {
+    res = 0
+    let float = false;
+    let dotDiv = 10;
+    const intArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    while (currIndex < calcArr.length) {
+        if (intArr.includes(calcArr[currIndex])) {
+            if (!float) {
+                res *= 10;
+                res += calcArr[currIndex];
+            }
+            else {
+                res += calcArr[currIndex] / dotDiv
+                dotDiv *= 10;
+            }
+        }
+        else if (calcArr[currIndex] == ".") float = true;
+        else if (["+", "-"].includes(calcArr[currIndex])) {
+            currIndex++
+            if (currIndex > calcArr.length - 1) callSyntaxError();
+            else if (calcArr[currIndex] == "+") res += evalEq(); 
+            else res -+ evalEq();
+        }
+    }
+    return res
+} 
+
+function callSyntaxError() {
+
+}
+
+function callMathError() {
+    
+}
+
 
 function Button() {
     let obj = document.createElement("button");
