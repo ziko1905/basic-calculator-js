@@ -174,13 +174,17 @@ function evalEq(currIndex) {
         else if (calcArr[currIndex] == ".") float = true;
         else if (["+", "-"].includes(calcArr[currIndex])) {
             currIndex++
-            if (currIndex > calcArr.length - 1) callSyntaxError();
-            else if (calcArr[currIndex-1] == "+") res += evalEq(currIndex); 
-            else res -= evalEq();
+            if (currIndex > calcArr.length - 1) return "Syntax Error";
+            else {
+                equ = evalEq(currIndex);
+                if (calcArr[currIndex-1] == "+") res += equ[0]; 
+                else res -= equ[0];
+                currIndex = equ[1]
+            }
         }
         currIndex++
     }
-    return  Math.floor(res*100) / 100
+    return  [Math.floor(res*100) / 100, currIndex]
 } 
 
 function callSyntaxError() {
@@ -212,7 +216,7 @@ function Button() {
         else if (pressedValue == "<") moveLeft();
         else if (pressedValue == ">") moveRight();
         else if (pressedValue == "=") {
-            drawResult(evalEq(0));
+            drawResult(evalEq(0)[0]);
         }
         else {
             calcArr.splice(currCharPos + 1, 0, pressedValue);
@@ -249,8 +253,9 @@ function draw(index) {
 }
 
 function drawResult(res) {
-    calcContext.font = TEXT_STYLE;
-    calcContext.fillText(res, 0, RESULT_Y_POS)
+    calcContext.font = `48px ${TEXT_FONT}`;
+    let textWidth = calcContext.measureText(res).width;
+    calcContext.fillText(res, SCREEN_WIDTH_NUMBER - textWidth - 10, RESULT_Y_POS)
 }
 
 function drawTargetLine() {
