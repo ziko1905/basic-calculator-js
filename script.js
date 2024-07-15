@@ -115,6 +115,10 @@ function clearCalcScreen() {
 
 }
 
+function clearResultScreen() {
+    calcContext.clearRect(0, RESULT_Y_POS - 50, SCREEN_WIDTH_NUMBER, SCREEN_HEIGHT_NUMBER)
+}
+
 function deleteCurrChar() {
     if (currCharPos == -1) return
     let removedVal = calcArr.splice(currCharPos, 1);
@@ -201,6 +205,7 @@ function Button() {
     obj.addEventListener("click", (e) => {
         e.target.style.backgroundColor = this.lightColor;
         let pressedValue = e.target.textContent;
+        clearResultScreen()
 
         if (pressedValue == "Clear") clearCalcScreen();
         else if (pressedValue == "Del") deleteCurrChar();
