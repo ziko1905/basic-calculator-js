@@ -4,7 +4,7 @@ let currCharPos = -1;
 
 const calcScreen = document.querySelector("canvas");
 const calcContext = calcScreen.getContext("2d")
-const TEXT_FONT = "48px serif";
+const TEXT_FONT = "38px serif";
 calcContext.font = TEXT_FONT;
 
 const SCREEN_WIDTH = getComputedStyle(calcScreen).width;
@@ -17,6 +17,7 @@ const DRAW_EQU_Y = 50;
 const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
 
 let drawX = STARTING_X_POS;
+let prevX = STARTING_X_POS;
 
 
 calcScreen.setAttribute("width", SCREEN_WIDTH);
@@ -121,18 +122,27 @@ function deleteCurrChar() {
 }
 
 function moveLeft() {
-    if (currCharPos == -1) return
     clearTargetLine();
-    drawX -= (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
-    currCharPos--
+    if (currCharPos == -1) {
+        drawX = prevX;
+        currCharPos = calcArr.length - 1
+    }
+    else {
+        drawX -= (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
+        currCharPos--
+    }
 }
 
 function moveRight() {
-    if (currCharPos == calcArr.length - 1) return
-    currCharPos++
     clearTargetLine();
-    drawX += (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
-    
+    if (currCharPos == calcArr.length - 1) {
+        drawX = STARTING_X_POS;
+        currCharPos = -1;
+    }
+    else {
+        currCharPos++
+        drawX += (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
+    }
 }
 
 function Button() {
@@ -180,13 +190,14 @@ function draw(index) {
             tmpX += ELEMENTS_GAP;
         }
     }
+    prevX = tmpX;
     
     clearTargetLine()
     
 }
 
 function drawTargetLine() {
-    calcContext.fillRect(drawX - 4, DRAW_EQU_Y, 4, -32);
+    calcContext.fillRect(drawX - 4, DRAW_EQU_Y, 4, -26);
     window.setTimeout(() => {
         clearTargetLine();
         window.setTimeout(() => {drawTargetLine()}, TARGET_LINE_INTERVAL * 1000);
@@ -195,7 +206,7 @@ function drawTargetLine() {
 }
 
 function clearTargetLine() {
-    calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -32);
+    calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -26);
     
 }
 
