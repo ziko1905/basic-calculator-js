@@ -137,7 +137,7 @@ function draw() {
     let context = calcScreen.getContext("2d")
     context.font = "48px serif"
     context.fillText(calcArr[calcArr.length - 1], drawX, DRAW_EQU_Y, 24)
-    drawX += 24;
+    drawX += 28;
 
     const text = context.measureText(calcArr.join("").charAt(calcArr.length - 1));
     console.log(calcArr.join("").charAt(-1))
@@ -148,9 +148,9 @@ function drawTargetLine() {
     let context = calcScreen.getContext("2d");
     const targetX = drawX
     console.log("draw")
-    context.fillRect(drawX, DRAW_EQU_Y, 4, -32);
+    context.fillRect(drawX - 4, DRAW_EQU_Y, 4, -32);
     window.setTimeout(() => {
-        context.clearRect(targetX, DRAW_EQU_Y, 4, -32);
+        context.clearRect(targetX - 4, DRAW_EQU_Y, 4, -32);
         window.setTimeout(drawTargetLine, TARGET_LINE_INTERVAL * 1000)
     }, TARGET_LINE_INTERVAL * 1000)
 }
