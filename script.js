@@ -1,6 +1,7 @@
 let calcArr = [];
 let prevAns = 0;
 const calcScreen = document.querySelector("canvas");
+const calcContext = calcScreen.getContext("2d")
 const SCREEN_WIDTH = getComputedStyle(calcScreen).width;
 const SCREEN_HEIGHT = getComputedStyle(calcScreen).height;
 const SCREEN_WIDTH_NUMBER = +SCREEN_WIDTH.split("").slice(0, -2).join("")
@@ -99,6 +100,12 @@ function clearCalcScreen() {
 
 }
 
+function deleteCurrChar() {
+    calcArr.pop()
+    drawX -= 24;
+
+}
+
 function Button(func) {
     let obj = document.createElement("button");
     obj.addEventListener("mousedown", (e) => {
@@ -134,9 +141,8 @@ function addToExpression(string) {
 console.log(SCREEN_WIDTH_NUMBER)
 
 function draw() {
-    let context = calcScreen.getContext("2d")
-    context.font = "48px serif"
-    context.fillText(calcArr[calcArr.length - 1], drawX, DRAW_EQU_Y, 24)
+    calcContext.font = "48px serif"
+    calcContext.fillText(calcArr[calcArr.length - 1], drawX, DRAW_EQU_Y, 24)
     clearTargetLine()
     drawX += 28;
 
@@ -146,9 +152,7 @@ function draw() {
 }
 
 function drawTargetLine() {
-    let context = calcScreen.getContext("2d");
-    console.log("draw")
-    context.fillRect(drawX - 4, DRAW_EQU_Y, 4, -32);
+    calcContext.fillRect(drawX - 4, DRAW_EQU_Y, 4, -32);
     window.setTimeout(() => {
         clearTargetLine()
         window.setTimeout(() => {drawTargetLine()}, TARGET_LINE_INTERVAL * 1000)
@@ -158,8 +162,7 @@ function drawTargetLine() {
 }
 
 function clearTargetLine() {
-    let context = calcScreen.getContext("2d")
-    context.clearRect(drawX - 4, DRAW_EQU_Y, 4, -32);
+    calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -32);
     
 }
 
