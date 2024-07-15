@@ -106,6 +106,7 @@ function clearCalcScreen() {
     calcContext.clearRect(0, 0, calcScreen.width, calcScreen.height);
     calcArr = [];
     drawX = STARTING_X_POS;
+    currCharPos = -1;
 
 }
 
