@@ -12,6 +12,7 @@ let drawX = STARTING_X_POS;
 const DRAW_EQU_Y = 50
 const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
 
+
 calcScreen.setAttribute("width", SCREEN_WIDTH);
 calcScreen.setAttribute("height", SCREEN_HEIGHT)
 
@@ -103,7 +104,8 @@ function clearCalcScreen() {
 
 function deleteCurrChar() {
     calcArr.pop()
-    drawX -= 24;
+    clearTargetLine()
+    drawX -= 28;
     calcContext.clearRect(drawX, DRAW_EQU_Y, 24, -32)
 
 
@@ -124,6 +126,7 @@ function Button(func) {
         let pressedValue = e.target.textContent;
         console.log(this.pressed)
         if (pressedValue == "Clear") clearCalcScreen()
+        else if (pressedValue == "Del") deleteCurrChar()
         else {
             calcArr.push(pressedValue)
             draw()
