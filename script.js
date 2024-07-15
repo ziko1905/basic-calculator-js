@@ -98,16 +98,18 @@ function clearCalcScreen() {
     calcContext.clearRect(0, 0, calcScreen.width, calcScreen.height)
     calcArr = []
     drawX = STARTING_X_POS;
-
     console.log("screen cleared")
 
 }
 
 function deleteCurrChar() {
-    calcArr.pop()
+    if (currCharPos == -1) return
+    calcArr.splice(currCharPos, 1)
     clearTargetLine()
     drawX -= 28;
-    calcContext.clearRect(drawX, DRAW_EQU_Y, SCREEN_WIDTH_NUMBER, -32)
+    draw(currCharPos)
+    currCharPos--
+    
 
 }
 
@@ -144,9 +146,10 @@ function Button(func) {
         else if (pressedValue == "<") moveLeft()
         else if (pressedValue == ">") moveRight()
         else {
-            calcArr.push(pressedValue)
-            draw(pressedValue)
+            calcArr.splice(currCharPos + 1, 0, pressedValue)
             currCharPos++
+            draw(currCharPos)
+            drawX += 28;
         }
 
     })
@@ -163,11 +166,17 @@ function addToExpression(string) {
 }
 console.log(SCREEN_WIDTH_NUMBER)
 
-function draw(element) {
+function draw(index) {
     calcContext.font = "48px serif"
-    calcContext.fillText(element, drawX, DRAW_EQU_Y, 24)
+    calcContext.clearRect(drawX, DRAW_EQU_Y, SCREEN_WIDTH_NUMBER, -32)
+    let tmpX = drawX
+    for (let n = index; n < calcArr.length; n++) {
+        calcContext.fillText(calcArr[n], tmpX, DRAW_EQU_Y, 24);
+        tmpX += 28;
+    }
+    
     clearTargetLine()
-    drawX += 28;
+    
 }
 
 function drawTargetLine() {
