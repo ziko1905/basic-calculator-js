@@ -130,7 +130,7 @@ function Button(func) {
         else if (pressedValue == "Del") deleteCurrChar()
         else {
             calcArr.push(pressedValue)
-            draw()
+            draw(pressedValue)
             currCharPos++
         }
 
@@ -148,9 +148,9 @@ function addToExpression(string) {
 }
 console.log(SCREEN_WIDTH_NUMBER)
 
-function draw() {
+function draw(element) {
     calcContext.font = "48px serif"
-    calcContext.fillText(calcArr[calcArr.length - 1], drawX, DRAW_EQU_Y, 24)
+    calcContext.fillText(element, drawX, DRAW_EQU_Y, 24)
     clearTargetLine()
     drawX += 28;
 }
