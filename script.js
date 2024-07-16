@@ -115,6 +115,8 @@ function clearCalcScreen() {
     calcArr = [];
     drawX = STARTING_X_POS;
     currCharPos = -1;
+    clearTargetLine()
+    drawTargetLine()
 
 }
 
@@ -127,8 +129,8 @@ function deleteCurrChar() {
     let removedVal = calcArr.splice(currCharPos, 1);
     clearTargetLine();
     drawX -= (removedVal == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
-    drawTargetLine()
     draw(currCharPos);
+    drawTargetLine();
     currCharPos--
     
 }
