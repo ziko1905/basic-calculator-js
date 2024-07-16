@@ -22,7 +22,8 @@ const RESULT_Y_POS = 180;
 
 let drawX = STARTING_X_POS;
 let prevX = STARTING_X_POS;
-let target_line_timeout;
+let targetLineTimeout;
+let drawTargetTimeout;
 let ans = 1;
 let error = false;
 
@@ -280,16 +281,17 @@ function drawResult(res) {
 
 function drawTargetLine() {
     calcContext.fillRect(drawX - 4, DRAW_EQU_Y, 4, -26);
-    target_line_timeout = window.setTimeout(() => {
+    targetLineTimeout = window.setTimeout(() => {
         calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -26);;
-        window.setTimeout(() => {drawTargetLine()}, TARGET_LINE_INTERVAL * 1000);
+        drawTargetTimeout = window.setTimeout(() => {drawTargetLine()}, TARGET_LINE_INTERVAL * 1000);
     }, TARGET_LINE_INTERVAL * 1000)
     
 }
 
 function clearTargetLine() {
     calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -26);
-    window.clearTimeout(target_line_timeout);
+    window.clearTimeout(targetLineTimeout);
+    window.clearTimeout(drawTargetTimeout);
 
 }
 
