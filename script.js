@@ -19,8 +19,10 @@ const DRAW_EQU_Y = 50;
 const TARGET_LINE_INTERVAL = 0.5; //interval in seconds
 const RESULT_Y_POS = 180;
 
+
 let drawX = STARTING_X_POS;
 let prevX = STARTING_X_POS;
+let target_line_timeout;
 let ans = 1;
 let error = false;
 
@@ -125,6 +127,7 @@ function deleteCurrChar() {
     let removedVal = calcArr.splice(currCharPos, 1);
     clearTargetLine();
     drawX -= (removedVal == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
+    drawTargetLine()
     draw(currCharPos);
     currCharPos--
     
@@ -140,6 +143,7 @@ function moveLeft() {
         drawX -= (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
         currCharPos--
     }
+    drawTargetLine()
 }
 
 function moveRight() {
@@ -152,6 +156,7 @@ function moveRight() {
         currCharPos++
         drawX += (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3 : ELEMENTS_GAP;
     }
+    drawTargetLine()
 }
 
 let bracketCount = 0;
@@ -176,7 +181,7 @@ function evalEq(currIndex) {
         else if (["+", "-"].includes(calcArr[currIndex])) {
             currIndex++
             if (currIndex > calcArr.length - 1) {
-                callSyntaxError();
+                callError("Syntax Error");
                 return null
             }
             else {
@@ -192,16 +197,11 @@ function evalEq(currIndex) {
     return [Math.floor(res*100) / 100, currIndex]
 } 
 
-function callSyntaxError() {
+function callError(errorType) {
     calcContext.clearRect(0, 0, SCREEN_WIDTH_NUMBER, SCREEN_HEIGHT_NUMBER);
-    drawResult("Syntax Error")
+    drawResult(errorType)
     error = true;
-}
-
-function callMathError() {
-    calcContext.clearRect(0, 0, SCREEN_WIDTH_NUMBER, SCREEN_HEIGHT_NUMBER);
-    drawResult("Math Error")
-    error = true;
+    clearTargetLine()
 }
 
 
@@ -225,6 +225,7 @@ function Button() {
             draw(0);
             drawX = prevX;
             error = false;
+            drawTargetLine()
         }
 
         if (pressedValue == "Clear") clearCalcScreen();
@@ -240,6 +241,7 @@ function Button() {
             currCharPos++
             draw(currCharPos);
             drawX += (calcArr[currCharPos] == "Ans") ? ELEMENTS_GAP * 3: ELEMENTS_GAP;
+            drawTargetLine()
         }
 
     })
@@ -264,7 +266,6 @@ function draw(index) {
         }
     }
     prevX = tmpX;
-    
     clearTargetLine()
     
 }
@@ -277,8 +278,8 @@ function drawResult(res) {
 
 function drawTargetLine() {
     calcContext.fillRect(drawX - 4, DRAW_EQU_Y, 4, -26);
-    window.setTimeout(() => {
-        clearTargetLine();
+    target_line_timeout = window.setTimeout(() => {
+        calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -26);;
         window.setTimeout(() => {drawTargetLine()}, TARGET_LINE_INTERVAL * 1000);
     }, TARGET_LINE_INTERVAL * 1000)
     
@@ -286,7 +287,8 @@ function drawTargetLine() {
 
 function clearTargetLine() {
     calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -26);
-    
+    window.clearTimeout(target_line_timeout);
+
 }
 
 drawTargetLine()
