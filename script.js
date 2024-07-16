@@ -164,7 +164,7 @@ function moveRight() {
 
 let bracketCount = 0;
 
-function evalEq(currIndex) {
+function evalEq(currIndex, onlyNumber=false) {
     let res = 0;
     let float = false;
     let dotDiv = 10;
@@ -180,8 +180,9 @@ function evalEq(currIndex) {
                 dotDiv *= 10;
             }
         }
+        else if (onlyNumber) return [res, currIndex - 1]
         else if (calcArr[currIndex] == ".") float = true;
-        else if (["+", "-", "x", "/"].includes(calcArr[currIndex])) {
+        else if (["+", "-"].includes(calcArr[currIndex])) {
             currIndex++
             if (currIndex > calcArr.length - 1) {
                 callError("Syntax Error");
@@ -189,21 +190,32 @@ function evalEq(currIndex) {
             }
             else {
                 equ = evalEq(currIndex);
-                if (!equ && calcArr[currIndex-1] != "/") return equ
+                if (!equ) return equ
                 else if (calcArr[currIndex-1] == "+") res += equ[0]; 
                 else if (calcArr[currIndex-1] == "-") res -= equ[0];
-                else if (calcArr[currIndex-1] == "x") res *= equ[0];
-                else {
-                    if (equ[0] === 0) {
-                        callError("Math error")
-                        return null
-                    }
-                    res /= equ[0];
-                }
                     
                 currIndex = equ[1]
             }
         } 
+        else if (["x", "/"].includes(calcArr[currIndex])) {
+            currIndex++
+            if (currIndex > calcArr.length - 1 || currIndex - 1 == 0) {
+                callError("Syntax Error");
+                return null
+            }
+            else {
+                equ = evalEq(currIndex, true)
+                if (!equ) return equ
+                else if (calcArr[currIndex-1] == "x") res *= equ[0]
+                else if (equ[0] == 0) {
+                    callError("Math error")
+                    return null
+                }
+                else res /= equ[0]
+
+                currIndex = equ[1]
+            }
+        }
 
         currIndex++
     }
