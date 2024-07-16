@@ -181,7 +181,7 @@ function evalEq(currIndex) {
             }
         }
         else if (calcArr[currIndex] == ".") float = true;
-        else if (["+", "-"].includes(calcArr[currIndex])) {
+        else if (["+", "-", "x", "/"].includes(calcArr[currIndex])) {
             currIndex++
             if (currIndex > calcArr.length - 1) {
                 callError("Syntax Error");
@@ -189,12 +189,22 @@ function evalEq(currIndex) {
             }
             else {
                 equ = evalEq(currIndex);
-                if (!equ) return equ
+                if (!equ && calcArr[currIndex-1] != "/") return equ
                 else if (calcArr[currIndex-1] == "+") res += equ[0]; 
-                else res -= equ[0];
+                else if (calcArr[currIndex-1] == "-") res -= equ[0];
+                else if (calcArr[currIndex-1] == "x") res *= equ[0];
+                else {
+                    if (equ[0] === 0) {
+                        callError("Math error")
+                        return null
+                    }
+                    res /= equ[0];
+                }
+                    
                 currIndex = equ[1]
             }
-        }
+        } 
+
         currIndex++
     }
     return [Math.floor(res*100) / 100, currIndex]
@@ -237,7 +247,10 @@ function Button() {
         else if (pressedValue == ">") moveRight();
         else if (pressedValue == "=") {
             equ = evalEq(0)
-            if (equ) drawResult(equ[0]);
+            if (equ) { 
+                drawResult(equ[0]);
+                ans = equ[0];
+            }
         }
         else {
             calcArr.splice(currCharPos + 1, 0, pressedValue);
