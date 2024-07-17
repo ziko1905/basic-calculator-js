@@ -190,10 +190,12 @@ function evalEq(currIndex, onlyNumber=false) {
                 return null
             }
             else {
-                equ = evalEq(currIndex, onlyNumber);
+                equ = evalEq(currIndex, calcArr[currIndex-1] == "-" ? true : onlyNumber);
                 if (!equ) return equ
                 else if (calcArr[currIndex-1] == "+") res += equ[0]; 
-                else if (calcArr[currIndex-1] == "-") res -= equ[0];
+                else if (calcArr[currIndex-1] == "-") {
+                    res = -equ[0];
+                }
                     
                 currIndex = equ[1]
             }
