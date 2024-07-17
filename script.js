@@ -202,7 +202,6 @@ function evalEq(currIndex, onlyNumber=false) {
                 if (!equ) return equ
                 else if (calcArr[currIndex-1] == "+") resStack[last] += equ[0]; 
                 else if (calcArr[currIndex-1] == "-") {
-                    //fix this part
                     resStack.push(-equ[0]);
                     equ = evalEq(equ[1]+1);
                     if (!equ) return equ
@@ -238,7 +237,7 @@ function evalEq(currIndex, onlyNumber=false) {
 
         currIndex++
     }
-    return [Math.floor(resStack.pop()*100) / 100, currIndex]
+    return [resStack.pop(), currIndex]
 } 
 
 function callError(errorType) {
