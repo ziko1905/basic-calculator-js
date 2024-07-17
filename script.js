@@ -163,25 +163,27 @@ function moveRight() {
 }
 
 let bracketCount = 0;
+let resStack = []
 
 function evalEq(currIndex, onlyNumber=false) {
-    let res = null;
+    resStack.push(null)
+    let last = resStack.length - 1
     let float = false;
     let dotDiv = 10;
     const intArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     while (currIndex < calcArr.length) {
         if (intArr.includes(+calcArr[currIndex])) {
-            res = +res
+            resStack[last] = +resStack[last]
             if (!float) {
-                res *= 10;
-                res += +calcArr[currIndex];
+                resStack[last] *= 10;
+                resStack[last] += +calcArr[currIndex];
             }
             else {
-                res += +calcArr[currIndex] / dotDiv
+                resStack[last] += +calcArr[currIndex] / dotDiv
                 dotDiv *= 10;
             }
         }
-        else if (onlyNumber && typeof res == "number" && calcArr[currIndex] != ".") return [res, currIndex - 1]
+        else if (onlyNumber && typeof resStack[last] == "number" && calcArr[currIndex] != ".") return [resStack.pop(), currIndex - 1]
         else if (calcArr[currIndex] == ".") {
             if (float) {
                 callError("Syntax Error")
@@ -198,9 +200,13 @@ function evalEq(currIndex, onlyNumber=false) {
             else {
                 equ = evalEq(currIndex, calcArr[currIndex-1] == "-" ? true : onlyNumber);
                 if (!equ) return equ
-                else if (calcArr[currIndex-1] == "+") res += equ[0]; 
+                else if (calcArr[currIndex-1] == "+") resStack[last] += equ[0]; 
                 else if (calcArr[currIndex-1] == "-") {
-                    res += -equ[0];
+                    //fix this part
+                    resStack.push(-equ[0]);
+                    equ = evalEq(equ[1]+1);
+                    if (!equ) return equ
+                    resStack[last] += equ[0]
                 }
                     
                 currIndex = equ[1]
@@ -208,6 +214,10 @@ function evalEq(currIndex, onlyNumber=false) {
         } 
         else if (["x", "/"].includes(calcArr[currIndex])) {
             currIndex++
+            if (!resStack[last]) {
+                resStack.pop()
+                last--
+            }
             if (currIndex > calcArr.length - 1 || currIndex - 1 == 0 || onlyNumber) {
                 callError("Syntax Error");
                 return null
@@ -215,12 +225,12 @@ function evalEq(currIndex, onlyNumber=false) {
             else {
                 equ = evalEq(currIndex, true)
                 if (!equ) return equ
-                else if (calcArr[currIndex-1] == "x") res *= equ[0]
+                else if (calcArr[currIndex-1] == "x") resStack[last] *= equ[0]
                 else if (equ[0] === 0) {
                     callError("Math error")
                     return null
                 }
-                else res /= equ[0]
+                else resStack[last] /= equ[0]
 
                 currIndex = equ[1]
             }
@@ -228,7 +238,7 @@ function evalEq(currIndex, onlyNumber=false) {
 
         currIndex++
     }
-    return [Math.floor(res*100) / 100, currIndex]
+    return [Math.floor(resStack.pop()*100) / 100, currIndex]
 } 
 
 function callError(errorType) {
