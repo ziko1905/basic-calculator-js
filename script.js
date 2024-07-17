@@ -181,7 +181,7 @@ function evalEq(currIndex, onlyNumber=false) {
                 dotDiv *= 10;
             }
         }
-        else if (onlyNumber && typeof res == "number") return [res, currIndex - 1]
+        else if (onlyNumber && typeof res == "number" && calcArr[currIndex] != ".") return [res, currIndex - 1]
         else if (calcArr[currIndex] == ".") float = true;
         else if (["+", "-"].includes(calcArr[currIndex])) {
             currIndex++
@@ -190,7 +190,7 @@ function evalEq(currIndex, onlyNumber=false) {
                 return null
             }
             else {
-                equ = evalEq(currIndex);
+                equ = evalEq(currIndex, onlyNumber);
                 if (!equ) return equ
                 else if (calcArr[currIndex-1] == "+") res += equ[0]; 
                 else if (calcArr[currIndex-1] == "-") res -= equ[0];
