@@ -182,7 +182,13 @@ function evalEq(currIndex, onlyNumber=false) {
             }
         }
         else if (onlyNumber && typeof res == "number" && calcArr[currIndex] != ".") return [res, currIndex - 1]
-        else if (calcArr[currIndex] == ".") float = true;
+        else if (calcArr[currIndex] == ".") {
+            if (float) {
+                callError("Syntax Error")
+                return null
+            }
+            float = true;
+        }
         else if (["+", "-"].includes(calcArr[currIndex])) {
             currIndex++
             if (currIndex > calcArr.length - 1) {
@@ -194,7 +200,7 @@ function evalEq(currIndex, onlyNumber=false) {
                 if (!equ) return equ
                 else if (calcArr[currIndex-1] == "+") res += equ[0]; 
                 else if (calcArr[currIndex-1] == "-") {
-                    res = -equ[0];
+                    res += -equ[0];
                 }
                     
                 currIndex = equ[1]
