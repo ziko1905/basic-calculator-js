@@ -165,12 +165,13 @@ function moveRight() {
 let bracketCount = 0;
 
 function evalEq(currIndex, onlyNumber=false) {
-    let res = 0;
+    let res = null;
     let float = false;
     let dotDiv = 10;
     const intArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     while (currIndex < calcArr.length) {
         if (intArr.includes(+calcArr[currIndex])) {
+            res = +res
             if (!float) {
                 res *= 10;
                 res += +calcArr[currIndex];
@@ -180,7 +181,7 @@ function evalEq(currIndex, onlyNumber=false) {
                 dotDiv *= 10;
             }
         }
-        else if (onlyNumber) return [res, currIndex - 1]
+        else if (onlyNumber && typeof res == "number") return [res, currIndex - 1]
         else if (calcArr[currIndex] == ".") float = true;
         else if (["+", "-"].includes(calcArr[currIndex])) {
             currIndex++
@@ -199,7 +200,7 @@ function evalEq(currIndex, onlyNumber=false) {
         } 
         else if (["x", "/"].includes(calcArr[currIndex])) {
             currIndex++
-            if (currIndex > calcArr.length - 1 || currIndex - 1 == 0) {
+            if (currIndex > calcArr.length - 1 || currIndex - 1 == 0 || onlyNumber) {
                 callError("Syntax Error");
                 return null
             }
@@ -207,7 +208,7 @@ function evalEq(currIndex, onlyNumber=false) {
                 equ = evalEq(currIndex, true)
                 if (!equ) return equ
                 else if (calcArr[currIndex-1] == "x") res *= equ[0]
-                else if (equ[0] == 0) {
+                else if (equ[0] === 0) {
                     callError("Math error")
                     return null
                 }
@@ -226,6 +227,7 @@ function callError(errorType) {
     calcContext.clearRect(0, 0, SCREEN_WIDTH_NUMBER, SCREEN_HEIGHT_NUMBER);
     drawResult(errorType)
     error = true;
+    currCharPos = calcArr.length - 1
     clearTargetLine()
 }
 
