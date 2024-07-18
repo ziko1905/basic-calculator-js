@@ -179,7 +179,7 @@ function evalEq(currIndex, onlyNumber=false) {
                 resStack[last] += +calcArr[currIndex];
             }
             else {
-                resStack[last] += +calcArr[currIndex] / dotDiv
+                resStack[last] += +calcArr[currIndex] / dotDiv;
                 dotDiv *= 10;
             }
         }
@@ -198,14 +198,15 @@ function evalEq(currIndex, onlyNumber=false) {
                 return null
             }
             else {
-                equ = evalEq(currIndex, calcArr[currIndex-1] == "-" ? true : onlyNumber);
+                let equ = evalEq(currIndex, calcArr[currIndex-1] == "-" ? true : onlyNumber);
                 if (!equ) return equ
                 else if (calcArr[currIndex-1] == "+") resStack[last] += equ[0]; 
                 else if (calcArr[currIndex-1] == "-") {
                     resStack.push(-equ[0]);
                     equ = evalEq(equ[1]+1);
                     if (!equ) return equ
-                    resStack[last] += equ[0]
+                    if (equ[0] == null) equ[0] = resStack.pop();
+                    resStack[last] += equ[0];
                 }
                     
                 currIndex = equ[1]
@@ -222,7 +223,7 @@ function evalEq(currIndex, onlyNumber=false) {
                 return null
             }
             else {
-                equ = evalEq(currIndex, true)
+                let equ = evalEq(currIndex, true);
                 if (!equ) return equ
                 else if (calcArr[currIndex-1] == "x") resStack[last] *= equ[0]
                 else if (equ[0] === 0) {
