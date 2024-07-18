@@ -1,4 +1,5 @@
 let calcArr = [];
+let equCalcArr = [];
 let prevAns = 0;
 let currCharPos = -1;
 
@@ -165,43 +166,59 @@ function moveRight() {
 let bracketCount = 0;
 let resStack = []
 
+function addMultiplicationSign() {
+    equCalcArr = [...calcArr];
+    const needAdding = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "Ans"];
+    let n = 0;
+    while (n < equCalcArr.length - 1) {
+        if ([")", "Ans"].includes(equCalcArr[n]) && [...needAdding, "("].includes(equCalcArr[n+1])) {
+            equCalcArr.splice(n+1, 0, "x")
+        }
+        else if (["(", "Ans"].includes(equCalcArr[n+1]) && [...needAdding, ")"].includes(equCalcArr[n])) {
+            equCalcArr.splice(n+1, 0, "x")
+        }
+        n++
+
+    }
+}
+
 function evalEq(currIndex, onlyNumber=false) {
     resStack.push(null)
     let last = resStack.length - 1
     let float = false;
     let dotDiv = 10;
     const intArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    while (currIndex < calcArr.length) {
-        if (intArr.includes(+calcArr[currIndex])) {
+    while (currIndex < equCalcArr.length) {
+        if (intArr.includes(+equCalcArr[currIndex])) {
             resStack[last] = +resStack[last]
             if (!float) {
                 resStack[last] *= 10;
-                resStack[last] += +calcArr[currIndex];
+                resStack[last] += +equCalcArr[currIndex];
             }
             else {
-                resStack[last] += +calcArr[currIndex] / dotDiv;
+                resStack[last] += +equCalcArr[currIndex] / dotDiv;
                 dotDiv *= 10;
             }
         }
-        else if (onlyNumber && typeof resStack[last] == "number" && calcArr[currIndex] != ".") return [resStack.pop(), currIndex - 1]
-        else if (calcArr[currIndex] == ".") {
+        else if (onlyNumber && typeof resStack[last] == "number" && equCalcArr[currIndex] != ".") return [resStack.pop(), currIndex - 1]
+        else if (equCalcArr[currIndex] == ".") {
             if (float) {
                 callError("Syntax Error")
                 return null
             }
             float = true;
         }
-        else if (["+", "-"].includes(calcArr[currIndex])) {
+        else if (["+", "-"].includes(equCalcArr[currIndex])) {
             currIndex++
-            if (currIndex > calcArr.length - 1) {
+            if (currIndex > equCalcArr.length - 1) {
                 callError("Syntax Error");
                 return null
             }
             else {
-                let equ = evalEq(currIndex, calcArr[currIndex-1] == "-" ? true : onlyNumber);
+                let equ = evalEq(currIndex, equCalcArr[currIndex-1] == "-" ? true : onlyNumber);
                 if (!equ) return equ
-                else if (calcArr[currIndex-1] == "+") resStack[last] += equ[0]; 
-                else if (calcArr[currIndex-1] == "-") {
+                else if (equCalcArr[currIndex-1] == "+") resStack[last] += equ[0]; 
+                else if (equCalcArr[currIndex-1] == "-") {
                     resStack.push(-equ[0]);
                     equ = evalEq(equ[1]+1);
                     if (!equ) return equ
@@ -212,20 +229,20 @@ function evalEq(currIndex, onlyNumber=false) {
                 currIndex = equ[1]
             }
         } 
-        else if (["x", "/"].includes(calcArr[currIndex])) {
+        else if (["x", "/"].includes(equCalcArr[currIndex])) {
             currIndex++
             if (!resStack[last]) {
                 resStack.pop()
                 last--
             }
-            if (currIndex > calcArr.length - 1 || currIndex - 1 == 0 || onlyNumber) {
+            if (currIndex > equCalcArr.length - 1 || currIndex - 1 == 0 || onlyNumber) {
                 callError("Syntax Error");
                 return null
             }
             else {
                 let equ = evalEq(currIndex, true);
                 if (!equ) return equ
-                else if (calcArr[currIndex-1] == "x") resStack[last] *= equ[0]
+                else if (equCalcArr[currIndex-1] == "x") resStack[last] *= equ[0]
                 else if (equ[0] === 0) {
                     callError("Math error")
                     return null
@@ -278,6 +295,7 @@ function Button() {
         else if (pressedValue == "<") moveLeft();
         else if (pressedValue == ">") moveRight();
         else if (pressedValue == "=") {
+            addMultiplicationSign()
             equ = evalEq(0)
             if (equ) { 
                 drawResult(equ[0]);
