@@ -183,8 +183,8 @@ function addMultiplicationSign() {
 }
 
 function evalEq(currIndex, onlyNumber=false) {
-    resStack.push(null)
-    let last = resStack.length - 1
+    resStack.push(null);
+    let last = resStack.length - 1;
     let float = false;
     let dotDiv = 10;
     const intArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -200,6 +200,9 @@ function evalEq(currIndex, onlyNumber=false) {
                 dotDiv *= 10;
             }
         }
+        else if (equCalcArr[currIndex] == "Ans") {
+            resStack[last] = ans;
+        }
         else if (onlyNumber && typeof resStack[last] == "number" && equCalcArr[currIndex] != ".") return [resStack.pop(), currIndex - 1]
         else if (equCalcArr[currIndex] == ".") {
             if (float) {
@@ -210,6 +213,10 @@ function evalEq(currIndex, onlyNumber=false) {
         }
         else if (["+", "-"].includes(equCalcArr[currIndex])) {
             currIndex++
+            if (!resStack[last]) {
+                resStack.pop()
+                last--
+            }
             if (currIndex > equCalcArr.length - 1) {
                 callError("Syntax Error");
                 return null
@@ -223,7 +230,10 @@ function evalEq(currIndex, onlyNumber=false) {
                     equ = evalEq(equ[1]+1);
                     if (!equ) return equ
                     if (equ[0] == null) equ[0] = resStack.pop();
-                    resStack[last] += equ[0];
+                    if (resStack[last]) {
+                        resStack[last] += equ[0];
+                    } 
+                    else resStack[last] = equ[0]
                 }
                     
                 currIndex = equ[1]
