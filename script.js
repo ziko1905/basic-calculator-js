@@ -188,6 +188,7 @@ class EvalEqu {
         let dot = false;
         let raise = false;
         let number = false;
+        let bracketCount = 0;
         for (let n = 0; n < this.equ.length; n++) {
             if (oper.includes(this.equ[n])) {
                 if ((n == this.equ.length - 1) ||
@@ -205,13 +206,18 @@ class EvalEqu {
                 if (dot || number || raise) return true
                 raise = true;
             }
-            else if (")" == this.equ[n]) raise = true;
+            else if ("(" == this.equ[n]) bracketCount++;
+            else if (")" == this.equ[n]) {
+                if (!bracketCount || ("(" == this.equ[n])) return true
+                raise = true;
+                bracketCount--
+            }
             else {
                 if (raise) return true
                 number = true;
             }
         }
-        return false
+        return bracketCount ? true : false
     }
 }
 
