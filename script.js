@@ -172,7 +172,7 @@ class EvalEqu {
             return
         }
         let brackets = this.evalBrackets();
-        if (brackets = this.evalBrackets()) {
+        if (brackets) {
             this.equ = brackets
             return
         }
@@ -226,8 +226,33 @@ class EvalEqu {
         }
         return bracketCount ? true : false
     }
+
     evalBrackets = () => {
-        return "Math error"
+        let replacement;
+        let f = null;
+        let s = null;
+        let prevBracketCount = 0;
+        for (let n = 0; n < this.equ.length; n++) {
+            if (this.equ[n] == "(") {
+                if (f === null) f = n;
+                else prevBracketCount++
+            }
+            else if ((this.equ[n] == ")")) {
+                if (prevBracketCount) prevBracketCount--;
+                else {
+                    s = n;
+                    break
+                }
+            }
+        }
+        if (f !== null) {
+            console.log(f, s)
+            replacement = new EvalEqu(this.equ.slice(f + 1, s)).equ
+            if (typeof replacement == "string") return replacement
+            console.log(replacement)
+            this.equ.splice(f, s + 1, ...replacement)
+        }
+        return false
     }
 }
 
