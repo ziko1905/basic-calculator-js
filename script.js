@@ -176,10 +176,7 @@ class EvalEqu {
         const needAdding = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "Ans"];
         let n = 0;
         while (n < this.equ.length - 1) {
-            if ([")", "Ans"].includes(this.equ[n]) && [...needAdding, "("].includes(this.equ[n+1])) {
-                this.equ.splice(n+1, 0, "x")
-            }
-            else if (["(", "Ans"].includes(this.equ[n+1]) && [...needAdding, ")"].includes(this.equ[n])) {
+            if (["(", "Ans"].includes(this.equ[n+1]) && [...needAdding, ")"].includes(this.equ[n])) {
                 this.equ.splice(n+1, 0, "x")
             }
             n++
