@@ -171,11 +171,11 @@ class EvalEqu {
             this.equ = "Syntax Error"
             return
         }
-        // let brackets = this.evalBrackets();
-        // if (brackets = this.evalBrackets()) {
-        //     this.equ = brackets
-        //     return
-        // }
+        let brackets = this.evalBrackets();
+        if (brackets = this.evalBrackets()) {
+            this.equ = brackets
+            return
+        }
     }
 
     addMultiplicationSign = () => {
