@@ -181,6 +181,7 @@ class EvalEqu {
             return
         }
         this.replaceAns()
+        this.convertToNumbers()
     }
 
     addMultiplicationSign = () => {
@@ -261,6 +262,51 @@ class EvalEqu {
         for (let n = 0; n < this.equ.length; n++) {
             if (this.equ[n] == "Ans") this.equ[n] = ans;
         }
+    }
+
+    convertToNumbers = () => {
+        let newArr = [];
+        let currNum = null;
+        let multiplayer = 1;
+        let dot = false;
+        let dotDiv = 10;
+        for (let n = 0; n < this.equ.length; n++) {
+            if (this.equ[n] == ".") {
+                dot = true;
+                currNum = +currNum;
+            }
+            else if (currNum == null) {
+                switch (this.equ[n]) {
+                    case "+":
+                        continue
+                    case "-":
+                        multiplayer *= -1;
+                        break
+                    default:
+                        currNum = +this.equ[n];
+                }
+            }
+            else if (EvalEqu.opers.includes(this.equ[n])) {
+                newArr.push(multiplayer * currNum)
+                if (EvalEqu.secondLvlOper.includes(this.equ[n])) newArr.push(this.equ[n])
+                currNum = null;
+                dot = false;
+                dotDiv = 10;
+                multiplayer = this.equ[n] == "-" ? -1 : 1;
+            }
+            else {
+                let add = +this.equ[n];
+                if (!dot) currNum *= 10;
+                else {
+                    add /= dotDiv;
+                    dotDiv *= 10
+                }
+                console.log(currNum, add)
+                currNum += add
+            }
+        }
+        newArr.push(currNum * multiplayer)
+        this.equ = newArr;
     }
 }
 
