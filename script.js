@@ -164,6 +164,10 @@ function moveRight() {
 }
 
 class EvalEqu {
+    static firstLvlOper = ["+", "-"];
+    static secondLvlOper = ["x", '/'];
+    static opers = [...this.firstLvlOper, ...this.secondLvlOper]
+
     constructor(arr) {
         this.equ = [...arr];
         this.addMultiplicationSign()
@@ -192,16 +196,15 @@ class EvalEqu {
     }
 
     checkSyntaxErrors = () => {
-        const oper = ["+", "-", "x", "/"];
         let dot = false;
         let raise = false;
         let number = false;
         let bracketCount = 0;
         for (let n = 0; n < this.equ.length; n++) {
-            if (oper.includes(this.equ[n])) {
+            if (EvalEqu.opers.includes(this.equ[n])) {
                 if ((n == this.equ.length - 1) ||
-                (n == 0 && ["x", "/"].includes(this.equ[n])) ||
-                (n > 0 && ["+", "-", "x", "/"].includes(this.equ[n-1]) && ["/", "x"].includes(this.equ[n]))) return true
+                (n == 0 && EvalEqu.secondLvlOper.includes(this.equ[n])) ||
+                (n > 0 && EvalEqu.opers.includes(this.equ[n-1]) && EvalEqu.secondLvlOper.includes(this.equ[n]))) return true
                 dot = false;
                 raise = false;
                 number = false;
@@ -249,7 +252,7 @@ class EvalEqu {
         if (f !== null) {
             replacement = new EvalEqu(this.equ.slice(f + 1, s)).equ
             if (typeof replacement == "string") return replacement
-            this.equ.splice(f, s + 1, ...replacement)
+            this.equ.splice(f, s - f + 1, ...replacement)
         }
         return false
     }
