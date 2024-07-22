@@ -164,9 +164,11 @@ function moveRight() {
 }
 
 class EvalEqu {
-    constructor() {
-        this.equ = [...calcArr];
+    constructor(arr) {
+        this.equ = [...arr];
         this.addMultiplicationSign()
+        let error = this.checkSyntaxErrors()
+        if (error) return error
         
     }
 
@@ -183,6 +185,33 @@ class EvalEqu {
             n++
 
         }
+    }
+
+    checkSyntaxErrors = () => {
+        const oper = ["+", "-", "x", "/"];
+        let dot = false;
+        let raise = false;
+        let number = false;
+        for (let n of this.equ) {
+            if (oper.includes(n)) {
+                dot = false;
+                raise = false;
+                number = false;
+            }
+            else if (n == ".") {
+                if (dot) return "Syntax Error"
+                dot = true;
+            }
+            else if (["Ans", ")"].includes()) {
+                if (dot || number || raise) return "Syntax Error"
+                raise = true;
+            }
+            else {
+                if (raise) return "Syntax Error"
+                number = true;
+            }
+        }
+        return null
     }
 }
 
