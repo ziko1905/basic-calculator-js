@@ -167,8 +167,15 @@ class EvalEqu {
     constructor(arr) {
         this.equ = [...arr];
         this.addMultiplicationSign()
-        if (this.checkSyntaxErrors()) this.equ = "Syntax Error"
-        
+        if (this.checkSyntaxErrors()) {
+            this.equ = "Syntax Error"
+            return
+        }
+        // let brackets = this.evalBrackets();
+        // if (brackets = this.evalBrackets()) {
+        //     this.equ = brackets
+        //     return
+        // }
     }
 
     addMultiplicationSign = () => {
@@ -208,7 +215,7 @@ class EvalEqu {
             }
             else if ("(" == this.equ[n]) bracketCount++;
             else if (")" == this.equ[n]) {
-                if (!bracketCount || ("(" == this.equ[n])) return true
+                if (!bracketCount || ("(" == this.equ[n-1])) return true
                 raise = true;
                 bracketCount--
             }
@@ -218,6 +225,9 @@ class EvalEqu {
             }
         }
         return bracketCount ? true : false
+    }
+    evalBrackets = () => {
+        return "Math error"
     }
 }
 
