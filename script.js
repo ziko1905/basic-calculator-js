@@ -166,9 +166,11 @@ function moveRight() {
 class EvalEqu {
     constructor() {
         this.equ = [...calcArr];
+        this.addMultiplicationSign()
+        
     }
 
-    static addMultiplicationSign = () => {
+    addMultiplicationSign = () => {
         const needAdding = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "Ans"];
         let n = 0;
         while (n < this.equ.length - 1) {
