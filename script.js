@@ -167,8 +167,7 @@ class EvalEqu {
     constructor(arr) {
         this.equ = [...arr];
         this.addMultiplicationSign()
-        let error = this.checkSyntaxErrors()
-        if (error) return error
+        if (this.checkSyntaxErrors()) this.equ = "Syntax Error"
         
     }
 
@@ -196,19 +195,20 @@ class EvalEqu {
                 number = false;
             }
             else if (n == ".") {
-                if (dot) return "Syntax Error"
+                if (dot) return true
                 dot = true;
             }
-            else if (["Ans", ")"].includes()) {
-                if (dot || number || raise) return "Syntax Error"
+            else if ("Ans" == n) {
+                if (dot || number || raise) return true
                 raise = true;
             }
+            else if (")" == n) raise = true;
             else {
-                if (raise) return "Syntax Error"
+                if (raise) return true
                 number = true;
             }
         }
-        return null
+        return false
     }
 }
 
