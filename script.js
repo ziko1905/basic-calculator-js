@@ -188,21 +188,24 @@ class EvalEqu {
         let dot = false;
         let raise = false;
         let number = false;
-        for (let n of this.equ) {
-            if (oper.includes(n)) {
+        for (let n = 0; n < this.equ.length; n++) {
+            if (oper.includes(this.equ[n])) {
+                if ((n == this.equ.length - 1) ||
+                (n == 0 && ["x", "/"].includes(this.equ[n])) ||
+                (n > 0 && ["+", "-", "x", "/"].includes(this.equ[n-1]) && ["/", "x"].includes(this.equ[n]))) return true
                 dot = false;
                 raise = false;
                 number = false;
             }
-            else if (n == ".") {
+            else if (this.equ[n] == ".") {
                 if (dot) return true
                 dot = true;
             }
-            else if ("Ans" == n) {
+            else if ("Ans" == this.equ[n]) {
                 if (dot || number || raise) return true
                 raise = true;
             }
-            else if (")" == n) raise = true;
+            else if (")" == this.equ[n]) raise = true;
             else {
                 if (raise) return true
                 number = true;
