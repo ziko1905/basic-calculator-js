@@ -176,6 +176,7 @@ class EvalEqu {
             this.equ = brackets
             return
         }
+        this.replaceAns()
     }
 
     addMultiplicationSign = () => {
@@ -246,13 +247,17 @@ class EvalEqu {
             }
         }
         if (f !== null) {
-            console.log(f, s)
             replacement = new EvalEqu(this.equ.slice(f + 1, s)).equ
             if (typeof replacement == "string") return replacement
-            console.log(replacement)
             this.equ.splice(f, s + 1, ...replacement)
         }
         return false
+    }
+
+    replaceAns = () => {
+        for (let n = 0; n < this.equ.length; n++) {
+            if (this.equ[n] == "Ans") this.equ[n] = ans;
+        }
     }
 }
 
