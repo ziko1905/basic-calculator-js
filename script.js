@@ -286,9 +286,9 @@ class EvalEqu {
                         currNum = +this.equ[n];
                 }
             }
-            else if (EvalEqu.opers.includes(this.equ[n])) {
+            else if (EvalEqu.opers.includes(this.equ[n]) || typeof this.equ[n] == "number") {
                 newArr.push(multiplayer * currNum)
-                if (EvalEqu.secondLvlOper.includes(this.equ[n])) newArr.push(this.equ[n])
+                if (EvalEqu.secondLvlOper.includes(this.equ[n]) || typeof this.equ[n] == "number") newArr.push(this.equ[n])
                 currNum = null;
                 dot = false;
                 dotDiv = 10;
@@ -301,12 +301,11 @@ class EvalEqu {
                     add /= dotDiv;
                     dotDiv *= 10
                 }
-                console.log(currNum, add)
                 currNum += add
             }
         }
         newArr.push(currNum * multiplayer)
-        this.equ = newArr;
+    this.equ = newArr;
     }
 }
 
