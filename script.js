@@ -369,16 +369,6 @@ class EvalEqu {
 
 }
 
-
-function callError(errorType) {
-    calcContext.clearRect(0, 0, SCREEN_WIDTH_NUMBER, SCREEN_HEIGHT_NUMBER);
-    drawResult(errorType)
-    error = true;
-    currCharPos = calcArr.length - 1
-    clearTargetLine()
-}
-
-
 function Button() {
     let obj = document.createElement("button");
     obj.addEventListener("mousedown", (e) => {
