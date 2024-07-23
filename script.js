@@ -182,6 +182,11 @@ class EvalEqu {
         }
         this.replaceAns()
         this.convertToNumbers()
+        let divError = this.secondLvlEval()
+        if (divError) {
+            this.equ = divError
+            return
+        }
     }
 
     addMultiplicationSign = () => {
@@ -306,6 +311,23 @@ class EvalEqu {
         }
         newArr.push(currNum * multiplayer)
     this.equ = newArr;
+    }
+
+    secondLvlEval = () => {
+        let i = 0;
+        while (i < this.equ.length) {
+            if (EvalEqu.secondLvlOper.includes(this.equ[i])) {
+                if (this.equ[i] == "x") {
+                    this.equ.splice(i - 1, 3, this.equ[i-1] * this.equ[i+1])
+                }
+                else {
+                    if (this.equ[i+1] === 0) return "Math error"
+                    this.equ.splice(i - 1, 3, this.equ[i-1] / this.equ[i+1])
+                }
+            }
+            i++
+        }
+        return false
     }
 }
 
