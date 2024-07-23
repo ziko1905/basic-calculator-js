@@ -163,6 +163,30 @@ function moveRight() {
     drawTargetLine()
 }
 
+function drawResult(res) {
+    calcContext.font = `48px ${TEXT_FONT}`;
+    let textWidth = calcContext.measureText(res).width;
+    calcContext.fillText(res, SCREEN_WIDTH_NUMBER - textWidth - 10, RESULT_Y_POS)
+}
+
+function drawTargetLine() {
+    calcContext.fillRect(drawX - 4, DRAW_EQU_Y, 4, -26);
+    targetLineTimeout = window.setTimeout(() => {
+        calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -26);;
+        drawTargetTimeout = window.setTimeout(() => {drawTargetLine()}, TARGET_LINE_INTERVAL * 1000);
+    }, TARGET_LINE_INTERVAL * 1000)
+    
+}
+
+function clearTargetLine() {
+    calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -26);
+    window.clearTimeout(targetLineTimeout);
+    window.clearTimeout(drawTargetTimeout);
+
+}
+
+drawTargetLine()
+
 class EvalEqu {
     static firstLvlOper = ["+", "-"];
     static secondLvlOper = ["x", '/'];
@@ -384,7 +408,8 @@ function Button() {
         else if (pressedValue == ">") moveRight();
         else if (pressedValue == "=") {
             equ = new EvalEqu(calcArr)
-            if (equ.equ) { 
+            if (equ.equ) {
+                // if (typeof equ.equ == "number") equ.equ = equ.equ.toFixed(2)
                 drawResult(equ.equ);
                 ans = equ.equ;
             }
@@ -423,26 +448,3 @@ function draw(index) {
     
 }
 
-function drawResult(res) {
-    calcContext.font = `48px ${TEXT_FONT}`;
-    let textWidth = calcContext.measureText(res).width;
-    calcContext.fillText(res, SCREEN_WIDTH_NUMBER - textWidth - 10, RESULT_Y_POS)
-}
-
-function drawTargetLine() {
-    calcContext.fillRect(drawX - 4, DRAW_EQU_Y, 4, -26);
-    targetLineTimeout = window.setTimeout(() => {
-        calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -26);;
-        drawTargetTimeout = window.setTimeout(() => {drawTargetLine()}, TARGET_LINE_INTERVAL * 1000);
-    }, TARGET_LINE_INTERVAL * 1000)
-    
-}
-
-function clearTargetLine() {
-    calcContext.clearRect(drawX - 4, DRAW_EQU_Y, 4, -26);
-    window.clearTimeout(targetLineTimeout);
-    window.clearTimeout(drawTargetTimeout);
-
-}
-
-drawTargetLine()
