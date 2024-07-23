@@ -176,9 +176,12 @@ class EvalEqu {
             return
         }
         let brackets = this.evalBrackets();
-        if (brackets) {
-            this.equ = brackets
-            return
+        while (brackets) {
+            if (typeof brackets == "string") {
+                this.equ = brackets;
+                return
+            }
+            else brackets = this.evalBrackets();
         }
         this.replaceAns()
         this.convertToNumbers()
@@ -187,6 +190,7 @@ class EvalEqu {
             this.equ = divError
             return
         }
+        this.firstLvlOper()
     }
 
     addMultiplicationSign = () => {
@@ -258,7 +262,8 @@ class EvalEqu {
         if (f !== null) {
             replacement = new EvalEqu(this.equ.slice(f + 1, s)).equ
             if (typeof replacement == "string") return replacement
-            this.equ.splice(f, s - f + 1, ...replacement)
+            this.equ.splice(f, s - f + 1, replacement)
+            return true
         }
         return false
     }
@@ -318,17 +323,26 @@ class EvalEqu {
         while (i < this.equ.length) {
             if (EvalEqu.secondLvlOper.includes(this.equ[i])) {
                 if (this.equ[i] == "x") {
-                    this.equ.splice(i - 1, 3, this.equ[i-1] * this.equ[i+1])
+                    this.equ.splice(i - 1, 3, this.equ[i-1] * this.equ[i+1]);
                 }
                 else {
                     if (this.equ[i+1] === 0) return "Math error"
-                    this.equ.splice(i - 1, 3, this.equ[i-1] / this.equ[i+1])
+                    this.equ.splice(i - 1, 3, this.equ[i-1] / this.equ[i+1]);
                 }
             }
-            i++
+            else i++
         }
         return false
     }
+
+    firstLvlOper = () => {
+        let res = 0;
+        while (this.equ.length > 0) {
+            res += this.equ.pop();
+        }
+        this.equ = res;
+    }
+
 }
 
 
