@@ -383,11 +383,10 @@ function Button() {
         else if (pressedValue == "<") moveLeft();
         else if (pressedValue == ">") moveRight();
         else if (pressedValue == "=") {
-            addMultiplicationSign()
-            equ = evalEq(0)
-            if (equ) { 
-                drawResult(equ[0]);
-                ans = equ[0];
+            equ = new EvalEqu(calcArr)
+            if (equ.equ) { 
+                drawResult(equ.equ);
+                ans = equ.equ;
             }
         }
         else {
