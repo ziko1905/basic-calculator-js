@@ -398,11 +398,8 @@ function Button() {
         else if (pressedValue == ">") moveRight();
         else if (pressedValue == "=") {
             equ = new EvalEqu(calcArr)
-            if (equ.equ) {
-                // if (typeof equ.equ == "number") equ.equ = equ.equ.toFixed(2)
-                drawResult(equ.equ);
-                ans = equ.equ;
-            }
+            drawResult(equ.equ);
+            ans = equ.equ;
         }
         else {
             calcArr.splice(currCharPos + 1, 0, pressedValue);
